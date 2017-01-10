@@ -19,6 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../../iron-test-helpers/mock-interactions.js"></script>
 
     <link rel="import" href="../../fetch-polyfill/fetch-polyfill.html">
+    <link rel="import" href="../../promise-polyfill/promise-polyfill-lite.html">
     <link rel="import" href="../response-view.html">
   </head>
   <body>
@@ -30,7 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </test-fixture>
 
     <script>
-    /* global suite, test, fixture, assert */
+    /* global suite, test, fixture, assert, TestHelpers */
     suite('basic', function() {
 
       function createRequest(method, url, headers, body) {
@@ -86,6 +87,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       });
 
       test('Should set response content type', function(done) {
+        TestHelpers.forceXIfStamp(element);
         // Content type is set async so it has to wait a moment.
         setTimeout(function() {
           assert.equal(element.contentType, 'application/json');
