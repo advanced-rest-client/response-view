@@ -92,7 +92,7 @@ styles to style this element.
         <response-body-view response-text="[[responseBody]]" content-type="[[contentType]]"></response-body-view>
       </template>
       <template is="dom-if" if="[[isError]]">
-        <response-error-view message="[[response.error.message]]"></response-error-view>
+        <response-error-view message="[[responseError.message]]"></response-error-view>
       </template>
     </template>
     <template is="dom-if" if="[[!hasResponse]]">
@@ -134,6 +134,12 @@ styles to style this element.
         type: Request,
         observer: '_requestChanged'
       },
+      /**
+       * An Error object associated with the request if the response was errored.
+       * It should have a `message` property set to the human readable explenation of the error.
+       * If not set the default message will be displaed.
+       */
+      responseError: Object,
       /**
        * A response body read from the `resposne` object.
        * The element will throw an error if the response body was read before
@@ -228,9 +234,9 @@ styles to style this element.
     },
     // resets the initial variables for the Response change handler.
     _reset: function() {
-      this.statusCode = undefined;
-      this.statusMessage = undefined;
-      this.responseHeaders = undefined;
+      this.set('statusCode', undefined);
+      this.set('statusMessage', undefined);
+      this.set('responseHeaders', undefined);
     },
 
     _responseChanged: function(response) {
@@ -238,8 +244,8 @@ styles to style this element.
       if (!response) {
         return;
       }
-      this.statusCode = response.status;
-      this.statusMessage = response.statusText;
+      this.set('statusCode', response.status);
+      this.set('statusMessage', response.statusText);
       var headers = response.headers;
       var rsponseHeaders = '';
       headers.forEach(function(value, name) {
@@ -248,11 +254,11 @@ styles to style this element.
         }
         rsponseHeaders += name + ': ' + value;
       });
-      this.responseHeaders = rsponseHeaders;
+      this.set('responseHeaders', rsponseHeaders);
       response.text()
       .then(function(body) {
-        this.responseBody = body;
-        this.contentType = headers.get('content-type');
+        this.set('responseBody', body);
+        this.set('contentType', headers.get('content-type'));
       }.bind(this))
       .catch(function(e) {
         this.fire('app-log', {
@@ -263,8 +269,8 @@ styles to style this element.
     },
 
     _resetRequestData: function() {
-      this.requestHeaders = undefined;
-      this.sentHttpMessage = undefined;
+      this.set('requestHeaders', undefined);
+      this.set('sentHttpMessage', undefined);
     },
 
     _requestChanged: function(request) {
@@ -280,15 +286,14 @@ styles to style this element.
         }
         requestHeaders += name + ': ' + value;
       });
-      this.responseHeaders = requestHeaders;
-
+      this.set('requestHeaders', requestHeaders);
       if (request.rawMessage) {
-        this.sentHttpMessage = request.rawMessage;
+        this.set('sentHttpMessage', request.rawMessage);
         return;
       }
       request.text()
       .then(function(body) {
-        this.sentHttpMessage = body;
+        this.set('sentHttpMessage', body);
       }.bind(this))
       .catch(function(e) {
         this.fire('app-log', {
@@ -306,7 +311,7 @@ styles to style this element.
     },
     // Computes if the request object has an error
     _computeIsError: function(response) {
-      if (response && response.error) {
+      if (response && !response.ok) {
         return true;
       }
       return false;
