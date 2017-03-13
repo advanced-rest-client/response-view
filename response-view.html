@@ -219,7 +219,7 @@ styles to style this element.
       isError: {
         type: Boolean,
         value: false,
-        computed: '_computeIsError(response)'
+        computed: '_computeIsError(responseError)'
       },
       /**
        * If true it means that the request has been made by the basic
@@ -237,6 +237,8 @@ styles to style this element.
       this.set('statusCode', undefined);
       this.set('statusMessage', undefined);
       this.set('responseHeaders', undefined);
+      this.set('responseBody', undefined);
+      this.set('contentType', undefined);
     },
 
     _responseChanged: function(response) {
@@ -255,17 +257,18 @@ styles to style this element.
         rsponseHeaders += name + ': ' + value;
       });
       this.set('responseHeaders', rsponseHeaders);
+      var content = this;
       response.text()
       .then(function(body) {
-        this.set('responseBody', body);
-        this.set('contentType', headers.get('content-type'));
-      }.bind(this))
+        content.set('responseBody', body);
+        content.set('contentType', headers.get('content-type'));
+      })
       .catch(function(e) {
-        this.fire('app-log', {
+        content.fire('app-log', {
           level: 'error',
           message: e
         });
-      }.bind(this));
+      });
     },
 
     _resetRequestData: function() {
@@ -291,16 +294,17 @@ styles to style this element.
         this.set('sentHttpMessage', request.rawMessage);
         return;
       }
+      var content = this;
       request.text()
       .then(function(body) {
-        this.set('sentHttpMessage', body);
-      }.bind(this))
+        content.set('sentHttpMessage', body);
+      })
       .catch(function(e) {
-        this.fire('app-log', {
+        content.fire('app-log', {
           level: 'error',
           message: e
         });
-      }.bind(this));
+      });
     },
     // Computes if the response panel should be displayed.
     _computeHasResponse: function(request) {
@@ -310,11 +314,8 @@ styles to style this element.
       return true;
     },
     // Computes if the request object has an error
-    _computeIsError: function(response) {
-      if (response && !response.ok) {
-        return true;
-      }
-      return false;
+    _computeIsError: function(error) {
+      return !!error;
     }
   });
   </script>

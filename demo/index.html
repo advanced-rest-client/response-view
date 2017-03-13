@@ -52,7 +52,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-input label="URL" value="{{url}}"></paper-input>
           <paper-button raised on-tap="download">go</paper-button>
         </div>
-        <response-view request="[[request]]" response="[[response]]" loading-time="[[loadingTime]]" is-xhr></response-view>
+        <response-view request="[[request]]" response="[[response]]" loading-time="[[loadingTime]]" is-xhr response-error="[[responseError]]"></response-view>
       </template>
     </demo-snippet>
     <paper-toast text=""></paper-toast>
@@ -60,8 +60,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
   var scope = document.querySelector('template[is="dom-bind"]');
   scope.url = 'https://cdn.rawgit.com/jarrodek/ChromeRestClient/develop/tasks/test-data/xml1.xml';
+  // scope.url = 'https://raw.githubusercontent.com/jarrodek/ChromeRestClient/develop/tasks/test-data/json2.json';
   scope.download = function() {
     scope.response = undefined;
+    scope.responseError = undefined;
     scope.loadingTime = 0;
 
     var demoHeaders = new Headers();
@@ -80,6 +82,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       scope.loadingTime = Date.now() - start;
     })
     .catch(function(e) {
+      scope.response = undefined;
+      scope.responseError = new Error(e.message);
       var toast = document.querySelector('paper-toast');
       toast.text = e.message;
       toast.opened = true;

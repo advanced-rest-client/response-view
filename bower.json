@@ -21,7 +21,7 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",
     "response-error-view": "advanced-rest-client/response-error-view#^0.1.1",
-    "response-body-view": "advanced-rest-client/response-body-view#^0.0.2",
+    "response-body-view": "advanced-rest-client/response-body-view#^0.1.0",
     "response-status-view": "advanced-rest-client/response-status-view#^0.1.1",
     "fetch-polyfill": "advanced-rest-client/fetch-polyfill#^0.1.1",
     "paper-input": "PolymerElements/paper-input#^1.1.22",
