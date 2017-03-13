@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/advanced-rest-client/response-view.svg?branch=master)](https://travis-ci.org/advanced-rest-client/response-view)  
+[![Build Status](https://travis-ci.org/advanced-rest-client/response-view.svg?branch=stage)](https://travis-ci.org/advanced-rest-client/response-view)  
 
 # response-view
 
