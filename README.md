@@ -4,16 +4,20 @@
 
 `<response-view>` An element to display the HTTP response view.
 
-It uses the Fetch API to pass the `Request` and `Response` data. The element
-imports polyfils for the Promises API and for the Fetch API.
-
+It uses the Fetch API's objects to pass the
+[Request](https://developer.mozilla.org/en-US/docs/Web/API/Request) and
+[Response](https://developer.mozilla.org/en-US/docs/Web/API/Response) data. The element
+import polyfils for the Promises API and for the Fetch API.
 
 ### Example
 ```
-<response-view
-  request="[[request]]"
-  response="[[response]]"
-  loading-time="[[loadingTime]]" is-xhr></response-view>
+<response-view loading-time="200.123" is-xhr></response-view>
+<script>
+  var panel = document.querySelector('response-view');
+  panel.request = request; // A Request class instance
+  panel.response = response; // A Response class instance
+  panel.responseError = undefined; // Clean if it was set previously.
+</script>
 ```
 
 If the transport can provide more details about the request like detailed
@@ -21,7 +25,8 @@ timings, redirects information or source message sent to the server you can
 set corresponding attributes to display this information. Otherwise set `isXhr`
 attribute to display a basic view.
 
-To see detailed information about data format see the `response-status-view`
+To see detailed information about data format see the
+[response-status-view](https://elements.advancedrestclient.com/elements/response-status-view)
 element documentation.
 
 ## Request additional properties
