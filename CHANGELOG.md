@@ -1,3 +1,13 @@
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/advanced-rest-client/response-view/compare/0.1.4...v0.1.6) (2017-04-10)
+
+
+### Docs
+
+* Updated documentation for the element ([29e5401ff2712872106b8d16cf39f3373d2345c2](https://github.com/advanced-rest-client/response-view/commit/29e5401ff2712872106b8d16cf39f3373d2345c2))
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/advanced-rest-client/response-view/compare/0.1.4...v0.1.5) (2017-04-10)
 
