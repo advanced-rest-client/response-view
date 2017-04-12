@@ -1,3 +1,13 @@
+<a name="0.1.9"></a>
+## [0.1.9](https://github.com/advanced-rest-client/response-view/compare/0.1.7...v0.1.9) (2017-04-12)
+
+
+### New
+
+* Added the request URL and request HTTP method to the status view ([f9fef3269ce7b8c6c5749a993a56918271252567](https://github.com/advanced-rest-client/response-view/commit/f9fef3269ce7b8c6c5749a993a56918271252567))
+
+
+
 <a name="0.1.8"></a>
 ## [0.1.8](https://github.com/advanced-rest-client/response-view/compare/0.1.7...v0.1.8) (2017-04-12)
 
