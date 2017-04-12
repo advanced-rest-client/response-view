@@ -67,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     scope.loadingTime = 0;
 
     var demoHeaders = new Headers();
-    // demoHeaders.append('etag', 'w/"test"');
+    demoHeaders.append('accept', 'application/xml');
     var opts = {
       method: 'GET',
       mode: 'cors',
