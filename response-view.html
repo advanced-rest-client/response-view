@@ -91,7 +91,9 @@ styles to style this element.
       redirects="[[redirects]]"
       redirect-timings="[[redirectTimings]]"
       timings="[[responseTimings]]"
-      is-xhr="[[isXhr]]"></response-status-view>
+      is-xhr="[[isXhr]]"
+      request-url="[[requestUrl]]"
+      request-method="[[requestMethod]]"></response-status-view>
     <template is="dom-if" if="[[hasResponse]]">
       <template is="dom-if" if="[[!isError]]">
         <response-body-view response-text="[[responseBody]]" content-type="[[contentType]]"></response-body-view>
@@ -235,7 +237,11 @@ styles to style this element.
       isXhr: {
         type: Boolean,
         value: false
-      }
+      },
+      // A request URL that has been used to make a request
+      requestUrl: String,
+      // A HTTP method used to make a request
+      requestMethod: String
     },
     // resets the initial variables for the Response change handler.
     _reset: function() {
@@ -286,6 +292,8 @@ styles to style this element.
       if (!request) {
         return;
       }
+      this.set('requestUrl', request.url);
+      this.set('requestMethod', request.method);
       var headers = request.headers;
       var requestHeaders = '';
       headers.forEach(function(value, name) {
