@@ -284,7 +284,6 @@ styles to style this element.
 
     _resetRequestData: function() {
       this.set('requestHeaders', undefined);
-      this.set('sentHttpMessage', undefined);
     },
 
     _requestChanged: function(request) {
@@ -303,21 +302,6 @@ styles to style this element.
         requestHeaders += name + ': ' + value;
       });
       this.set('requestHeaders', requestHeaders);
-      if (request.rawMessage) {
-        this.set('sentHttpMessage', request.rawMessage);
-        return;
-      }
-      var content = this;
-      request.text()
-      .then(function(body) {
-        content.set('sentHttpMessage', body);
-      })
-      .catch(function(e) {
-        content.fire('app-log', {
-          level: 'error',
-          message: e
-        });
-      });
     },
     // Computes if the response panel should be displayed.
     _computeHasResponse: function(request) {
