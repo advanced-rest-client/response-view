@@ -1,3 +1,13 @@
+<a name="0.1.11"></a>
+## [0.1.11](https://github.com/advanced-rest-client/response-view/compare/0.1.9...0.1.11) (2017-10-03)
+
+
+### Update
+
+* Removed code handled by other element. ([847518275bb45bcda4cfb7d03554cd33f473fae5](https://github.com/advanced-rest-client/response-view/commit/847518275bb45bcda4cfb7d03554cd33f473fae5))
+
+
+
 <a name="0.1.10"></a>
 ## [0.1.10](https://github.com/advanced-rest-client/response-view/compare/0.1.9...v0.1.10) (2017-04-12)
 
