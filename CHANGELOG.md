@@ -1,3 +1,14 @@
+<a name="0.1.12"></a>
+## [0.1.12](https://github.com/advanced-rest-client/response-view/compare/0.1.11...0.1.12) (2017-10-06)
+
+
+### Update
+
+* Adding default content-type to the response. ([792dcfe3a2a2aa61c5e4cff68c8a892b88cd4b8f](https://github.com/advanced-rest-client/response-view/commit/792dcfe3a2a2aa61c5e4cff68c8a892b88cd4b8f))
+* Correcting misspell ([15444377dd7c140ee7cf075fb436edcfe1b56ce1](https://github.com/advanced-rest-client/response-view/commit/15444377dd7c140ee7cf075fb436edcfe1b56ce1))
+
+
+
 <a name="0.1.11"></a>
 ## [0.1.11](https://github.com/advanced-rest-client/response-view/compare/0.1.9...0.1.11) (2017-10-03)
 
