@@ -268,11 +268,15 @@ styles to style this element.
         rsponseHeaders += name + ': ' + value;
       });
       this.set('responseHeaders', rsponseHeaders);
+      var ct = headers.get('content-type');
+      if (!ct) {
+        ct = 'text/plain';
+      }
       var content = this;
       response.text()
       .then(function(body) {
         content.set('responseBody', body);
-        content.set('contentType', headers.get('content-type'));
+        content.set('contentType', ct);
       })
       .catch(function(e) {
         content.fire('app-log', {
