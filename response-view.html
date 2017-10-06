@@ -260,19 +260,23 @@ styles to style this element.
       this.set('statusCode', response.status);
       this.set('statusMessage', response.statusText);
       var headers = response.headers;
-      var rsponseHeaders = '';
+      var responseHeaders = '';
       headers.forEach(function(value, name) {
-        if (rsponseHeaders) {
-          rsponseHeaders += '\n';
+        if (responseHeaders) {
+          responseHeaders += '\n';
         }
-        rsponseHeaders += name + ': ' + value;
+        responseHeaders += name + ': ' + value;
       });
-      this.set('responseHeaders', rsponseHeaders);
+      this.set('responseHeaders', responseHeaders);
+      var ct = headers.get('content-type');
+      if (!ct) {
+        ct = 'text/plain';
+      }
       var content = this;
       response.text()
       .then(function(body) {
         content.set('responseBody', body);
-        content.set('contentType', headers.get('content-type'));
+        content.set('contentType', ct);
       })
       .catch(function(e) {
         content.fire('app-log', {
