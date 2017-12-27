@@ -1,3 +1,13 @@
+<a name="0.1.14"></a>
+## [0.1.14](https://github.com/advanced-rest-client/response-view/compare/0.1.13...0.1.14) (2017-12-27)
+
+
+### Update
+
+* Now the element will display received body message when errored ([a5c1133f5d3bd3c660abf106f1b3acedc43792aa](https://github.com/advanced-rest-client/response-view/commit/a5c1133f5d3bd3c660abf106f1b3acedc43792aa))
+
+
+
 <a name="0.1.13"></a>
 ## [0.1.13](https://github.com/advanced-rest-client/response-view/compare/0.1.12...0.1.13) (2017-10-06)
 
