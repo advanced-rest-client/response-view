@@ -80,6 +80,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     .then(function(response) {
       scope.response = response;
       scope.loadingTime = Date.now() - start;
+      if (!response.ok) {
+        scope.responseError = new Error('Unable to make a connection');
+      } else {
+        scope.responseError = undefined;
+      }
     })
     .catch(function(e) {
       scope.response = undefined;

@@ -95,11 +95,11 @@ styles to style this element.
       request-url="[[requestUrl]]"
       request-method="[[requestMethod]]"></response-status-view>
     <template is="dom-if" if="[[hasResponse]]">
-      <template is="dom-if" if="[[!isError]]">
-        <response-body-view response-text="[[responseBody]]" content-type="[[contentType]]"></response-body-view>
-      </template>
       <template is="dom-if" if="[[isError]]">
         <response-error-view message="[[responseError.message]]"></response-error-view>
+      </template>
+      <template is="dom-if" if="[[hasResponseBody]]">
+        <response-body-view response-text="[[responseBody]]" content-type="[[contentType]]"></response-body-view>
       </template>
     </template>
     <template is="dom-if" if="[[!hasResponse]]">
@@ -222,6 +222,14 @@ styles to style this element.
         value: false,
         computed: '_computeHasResponse(request)'
       },
+      /**
+       * Computed value, true when the response body has a value.
+       */
+      hasResponseBody: {
+        type: Boolean,
+        value: false,
+        computed: '_computeHasResponseBody(responseBody)'
+      },
       // Computed value, true if the response has error object set.
       isError: {
         type: Boolean,
@@ -313,6 +321,10 @@ styles to style this element.
         return false;
       }
       return true;
+    },
+
+    _computeHasResponseBody: function(body) {
+      return !!body;
     },
     // Computes if the request object has an error
     _computeIsError: function(error) {
