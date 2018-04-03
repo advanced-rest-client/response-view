@@ -73,10 +73,10 @@ the License.
    * ## Response data model
    *
    * The response is ARC response data model:
-   *  - status (`Number`) - Response status code
-   *  - statusText (`String`) - Response status text. Can be empty string.
-   *  - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
-   *  - headers (`String|undefined`) - Response headers
+   * - status (`Number`) - Response status code
+   * - statusText (`String`) - Response status text. Can be empty string.
+   * - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
+   * - headers (`String|undefined`) - Response headers
    *
    * Response object is created by `advanced-rest-client/xhr-simple-request`.
    * However, any transport library can generate similar object.
@@ -132,31 +132,39 @@ the License.
     static get properties() {
       return {
         /**
-         * The `Response` object as defined in the Fetch API spec.
+         * ARC response object.
          *
-         * This element will read the response body from it so it need to not
-         * be read before setting this to this element. According to the Fetch
-         * API the response can be read only once.
+         * Properties -
+         * - status (`Number`) - Response status code
+         * - statusText (`String`) - Response status text. Can be empty string.
+         * - headers (`String|undefined`) - Response headers
+         * - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
          *
-         * The element will set a `responseBody` property which will be a String
-         * of the response.
-         *
-         * This element imports a polyfill for the Fetch API.
+         * @type {{
+         *  status: String,
+         *  statusText: String,
+         *  headers: (String|undefined),
+         *  payload: (String|Document|ArrayBuffer|Blob|undefined)}}
          */
         response: {
           type: Object,
           observer: '_responseChanged'
         },
         /**
-         * The `Request` object as defined in the Fetch API spec.
-         * This element provides the polyfill for the Fetch API.
+         * ARC request object
          *
-         * This element will read the request body from it so it need to not
-         * be read before setting this to this element. According to the Fetch
-         * API the body can be read only once.
+         * Properties -
+         * - url (`String`) - Request URL
+         * - method (`String`) - Request HTTP method.
+         * - headers (`String|undefined`) - HTTP headers string
+         * - payload (`String|FormData|File|ArrayBuffer|undefined`) Request body
          *
-         * Please, use the `Request.clone()` method and set a copy if you need
-         * to read the body elsewhere.
+         * @type {{
+         *  url: String.
+         *  method: String,
+         *  headers: (String|undefined),
+         *  payload: (String|FormData|File|ArrayBuffer|undefined)
+         * }}
          */
         request: {
           type: Object,

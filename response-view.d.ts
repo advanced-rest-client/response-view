@@ -35,10 +35,10 @@ declare namespace ApiElements {
    * ## Response data model
    *
    * The response is ARC response data model:
-   *  - status (`Number`) - Response status code
-   *  - statusText (`String`) - Response status text. Can be empty string.
-   *  - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
-   *  - headers (`String|undefined`) - Response headers
+   * - status (`Number`) - Response status code
+   * - statusText (`String`) - Response status text. Can be empty string.
+   * - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
+   * - headers (`String|undefined`) - Response headers
    *
    * Response object is created by `advanced-rest-client/xhr-simple-request`.
    * However, any transport library can generate similar object.
@@ -87,29 +87,24 @@ declare namespace ApiElements {
   class ResponseView extends Polymer.Element {
 
     /**
-     * The `Response` object as defined in the Fetch API spec.
+     * ARC response object.
      *
-     * This element will read the response body from it so it need to not
-     * be read before setting this to this element. According to the Fetch
-     * API the response can be read only once.
-     *
-     * The element will set a `responseBody` property which will be a String
-     * of the response.
-     *
-     * This element imports a polyfill for the Fetch API.
+     * Properties -
+     * - status (`Number`) - Response status code
+     * - statusText (`String`) - Response status text. Can be empty string.
+     * - headers (`String|undefined`) - Response headers
+     * - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
      */
-    response: object|null|undefined;
+    response: {status: String|null, statusText: String|null, headers?: String|null, payload?: String|Document|ArrayBuffer|Blob|null};
 
     /**
-     * The `Request` object as defined in the Fetch API spec.
-     * This element provides the polyfill for the Fetch API.
+     * ARC request object
      *
-     * This element will read the request body from it so it need to not
-     * be read before setting this to this element. According to the Fetch
-     * API the body can be read only once.
-     *
-     * Please, use the `Request.clone()` method and set a copy if you need
-     * to read the body elsewhere.
+     * Properties -
+     * - url (`String`) - Request URL
+     * - method (`String`) - Request HTTP method.
+     * - headers (`String|undefined`) - HTTP headers string
+     * - payload (`String|FormData|File|ArrayBuffer|undefined`) Request body
      */
     request: object|null|undefined;
 

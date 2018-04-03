@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "elements": [
     {
-      "description": "An element to display HTTP response view.\n\nIt accepts request data object to render additional information in the\nstatus bar (method & URL).\n\n## Data model\n\n## Request data model\n\nThe request is ARC (Advanced REST client) request data model. It expects\nthe following properties:\n- url (`String`) - Request URL\n- method (`String`) - Request HTTP method.\n- headers (`String|undefined`) - HTTP headers string\n- payload (`String|FormData|File|ArrayBuffer|undefined`) Request body\n\n## Response data model\n\nThe response is ARC response data model:\n - status (`Number`) - Response status code\n - statusText (`String`) - Response status text. Can be empty string.\n - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body\n - headers (`String|undefined`) - Response headers\n\nResponse object is created by `advanced-rest-client/xhr-simple-request`.\nHowever, any transport library can generate similar object.\n\n## Advanced transport properties\n\nWhen using own transport libraries or server side transport you may have\naccess to more information about the request and response like redirects\nand timings. The response status view can render additional UI for this\ndata.\nTo enable this feature, set `isXhr` to false and any of the following\nproperties:\n\n- sentHttpMessage `String` - Raw HTTP message sent to server\n- redirects `Array<Object>` - A list of redirect information. Each object has\nthe following properties:\n - status (`Number`) - Response status code\n - statusText (`String`) - Response status text. Can be empty string.\n - headers (`String|undefined`) - Response headers\n - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body\n- redirectTimings `Array<Object>` - List of HAR 1.2 timing objects for\neach redirected request. The order must corresponds with order in `redirects`\narray.\n- timings `Object` - HAR 1.2 timings object\n\nRead [response-status-view](https://elements.advancedrestclient.com/elements/response-status-view)\nelement documentation for more details.\n\n## Error reporting\n\nIf there's a request error set `isError` property and the `responseError`\nthat is an `Error` object.\n\n## Changes in version 2.0\n- API components does not uses `Reques` and `Response` objects anymore.\nInstead use data model described above.\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--response-view` | Mixin applied to the element | `{}`\n`--no-info-message` | Mixin applied to the information about lack of the response | `{}`\n\nUse: `response-status-view`, `response-body-view` and `response-error-view`\nstyles to style this element.",
+      "description": "An element to display HTTP response view.\n\nIt accepts request data object to render additional information in the\nstatus bar (method & URL).\n\n## Data model\n\n## Request data model\n\nThe request is ARC (Advanced REST client) request data model. It expects\nthe following properties:\n- url (`String`) - Request URL\n- method (`String`) - Request HTTP method.\n- headers (`String|undefined`) - HTTP headers string\n- payload (`String|FormData|File|ArrayBuffer|undefined`) Request body\n\n## Response data model\n\nThe response is ARC response data model:\n- status (`Number`) - Response status code\n- statusText (`String`) - Response status text. Can be empty string.\n- payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body\n- headers (`String|undefined`) - Response headers\n\nResponse object is created by `advanced-rest-client/xhr-simple-request`.\nHowever, any transport library can generate similar object.\n\n## Advanced transport properties\n\nWhen using own transport libraries or server side transport you may have\naccess to more information about the request and response like redirects\nand timings. The response status view can render additional UI for this\ndata.\nTo enable this feature, set `isXhr` to false and any of the following\nproperties:\n\n- sentHttpMessage `String` - Raw HTTP message sent to server\n- redirects `Array<Object>` - A list of redirect information. Each object has\nthe following properties:\n - status (`Number`) - Response status code\n - statusText (`String`) - Response status text. Can be empty string.\n - headers (`String|undefined`) - Response headers\n - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body\n- redirectTimings `Array<Object>` - List of HAR 1.2 timing objects for\neach redirected request. The order must corresponds with order in `redirects`\narray.\n- timings `Object` - HAR 1.2 timings object\n\nRead [response-status-view](https://elements.advancedrestclient.com/elements/response-status-view)\nelement documentation for more details.\n\n## Error reporting\n\nIf there's a request error set `isError` property and the `responseError`\nthat is an `Error` object.\n\n## Changes in version 2.0\n- API components does not uses `Reques` and `Response` objects anymore.\nInstead use data model described above.\n\nCustom property | Description | Default\n----------------|-------------|----------\n`--response-view` | Mixin applied to the element | `{}`\n`--no-info-message` | Mixin applied to the information about lack of the response | `{}`\n\nUse: `response-status-view`, `response-body-view` and `response-error-view`\nstyles to style this element.",
       "summary": "",
       "path": "response-view.html",
       "properties": [
@@ -583,16 +583,16 @@
         },
         {
           "name": "response",
-          "type": "Object",
-          "description": "The `Response` object as defined in the Fetch API spec.\n\nThis element will read the response body from it so it need to not\nbe read before setting this to this element. According to the Fetch\nAPI the response can be read only once.\n\nThe element will set a `responseBody` property which will be a String\nof the response.\n\nThis element imports a polyfill for the Fetch API.",
+          "type": "{status: String, statusText: String, headers: (String | undefined), payload: (String | Document | ArrayBuffer | Blob | undefined)}",
+          "description": "ARC response object.\n\nProperties -\n- status (`Number`) - Response status code\n- statusText (`String`) - Response status text. Can be empty string.\n- headers (`String|undefined`) - Response headers\n- payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 145,
+              "line": 148,
               "column": 8
             },
             "end": {
-              "line": 148,
+              "line": 151,
               "column": 9
             }
           },
@@ -605,15 +605,15 @@
         {
           "name": "request",
           "type": "Object",
-          "description": "The `Request` object as defined in the Fetch API spec.\nThis element provides the polyfill for the Fetch API.\n\nThis element will read the request body from it so it need to not\nbe read before setting this to this element. According to the Fetch\nAPI the body can be read only once.\n\nPlease, use the `Request.clone()` method and set a copy if you need\nto read the body elsewhere.",
+          "description": "ARC request object\n\nProperties -\n- url (`String`) - Request URL\n- method (`String`) - Request HTTP method.\n- headers (`String|undefined`) - HTTP headers string\n- payload (`String|FormData|File|ArrayBuffer|undefined`) Request body",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 160,
+              "line": 168,
               "column": 8
             },
             "end": {
-              "line": 163,
+              "line": 171,
               "column": 9
             }
           },
@@ -630,11 +630,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 174,
+              "line": 182,
               "column": 8
             },
             "end": {
-              "line": 174,
+              "line": 182,
               "column": 29
             }
           },
@@ -649,11 +649,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 182,
+              "line": 190,
               "column": 8
             },
             "end": {
-              "line": 182,
+              "line": 190,
               "column": 28
             }
           },
@@ -668,11 +668,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 187,
+              "line": 195,
               "column": 8
             },
             "end": {
-              "line": 187,
+              "line": 195,
               "column": 26
             }
           },
@@ -687,11 +687,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 192,
+              "line": 200,
               "column": 8
             },
             "end": {
-              "line": 192,
+              "line": 200,
               "column": 29
             }
           },
@@ -706,11 +706,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 197,
+              "line": 205,
               "column": 8
             },
             "end": {
-              "line": 197,
+              "line": 205,
               "column": 30
             }
           },
@@ -725,11 +725,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 202,
+              "line": 210,
               "column": 8
             },
             "end": {
-              "line": 202,
+              "line": 210,
               "column": 31
             }
           },
@@ -744,11 +744,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 207,
+              "line": 215,
               "column": 8
             },
             "end": {
-              "line": 207,
+              "line": 215,
               "column": 27
             }
           },
@@ -763,11 +763,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 212,
+              "line": 220,
               "column": 8
             },
             "end": {
-              "line": 212,
+              "line": 220,
               "column": 31
             }
           },
@@ -782,11 +782,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 216,
+              "line": 224,
               "column": 8
             },
             "end": {
-              "line": 216,
+              "line": 224,
               "column": 27
             }
           },
@@ -801,11 +801,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 221,
+              "line": 229,
               "column": 8
             },
             "end": {
-              "line": 221,
+              "line": 229,
               "column": 31
             }
           },
@@ -820,11 +820,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 230,
+              "line": 238,
               "column": 8
             },
             "end": {
-              "line": 230,
+              "line": 238,
               "column": 24
             }
           },
@@ -839,11 +839,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 236,
+              "line": 244,
               "column": 8
             },
             "end": {
-              "line": 236,
+              "line": 244,
               "column": 30
             }
           },
@@ -855,28 +855,6 @@
           "name": "hasResponse",
           "type": "boolean",
           "description": "Computed value, false if the response is set and it is a HEAD type\nrequest (which can't have the response).",
-          "privacy": "public",
-          "sourceRange": {
-            "start": {
-              "line": 241,
-              "column": 8
-            },
-            "end": {
-              "line": 245,
-              "column": 9
-            }
-          },
-          "metadata": {
-            "polymer": {
-              "readOnly": true
-            }
-          },
-          "defaultValue": "false"
-        },
-        {
-          "name": "hasResponseBody",
-          "type": "boolean",
-          "description": "Computed value, true when the response body has a value.",
           "privacy": "public",
           "sourceRange": {
             "start": {
@@ -896,17 +874,39 @@
           "defaultValue": "false"
         },
         {
+          "name": "hasResponseBody",
+          "type": "boolean",
+          "description": "Computed value, true when the response body has a value.",
+          "privacy": "public",
+          "sourceRange": {
+            "start": {
+              "line": 257,
+              "column": 8
+            },
+            "end": {
+              "line": 261,
+              "column": 9
+            }
+          },
+          "metadata": {
+            "polymer": {
+              "readOnly": true
+            }
+          },
+          "defaultValue": "false"
+        },
+        {
           "name": "isError",
           "type": "boolean",
           "description": "Set to `true` if the response has error object set.",
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 255,
+              "line": 263,
               "column": 8
             },
             "end": {
-              "line": 258,
+              "line": 266,
               "column": 9
             }
           },
@@ -922,11 +922,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 265,
+              "line": 273,
               "column": 8
             },
             "end": {
-              "line": 268,
+              "line": 276,
               "column": 9
             }
           },
@@ -942,11 +942,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 270,
+              "line": 278,
               "column": 8
             },
             "end": {
-              "line": 270,
+              "line": 278,
               "column": 26
             }
           },
@@ -961,11 +961,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 272,
+              "line": 280,
               "column": 8
             },
             "end": {
-              "line": 272,
+              "line": 280,
               "column": 29
             }
           },
@@ -3147,11 +3147,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 279,
+              "line": 287,
               "column": 4
             },
             "end": {
-              "line": 285,
+              "line": 293,
               "column": 5
             }
           },
@@ -3164,11 +3164,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 291,
+              "line": 299,
               "column": 4
             },
             "end": {
-              "line": 305,
+              "line": 313,
               "column": 5
             }
           },
@@ -3187,11 +3187,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 312,
+              "line": 320,
               "column": 4
             },
             "end": {
-              "line": 326,
+              "line": 334,
               "column": 5
             }
           },
@@ -3214,11 +3214,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 332,
+              "line": 340,
               "column": 4
             },
             "end": {
-              "line": 340,
+              "line": 348,
               "column": 5
             }
           },
@@ -3237,11 +3237,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 347,
+              "line": 355,
               "column": 4
             },
             "end": {
-              "line": 352,
+              "line": 360,
               "column": 5
             }
           },
@@ -3260,11 +3260,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 359,
+              "line": 367,
               "column": 4
             },
             "end": {
-              "line": 361,
+              "line": 369,
               "column": 5
             }
           },
@@ -4230,7 +4230,7 @@
           "column": 2
         },
         "end": {
-          "line": 362,
+          "line": 370,
           "column": 3
         }
       },
@@ -4240,30 +4240,30 @@
       "attributes": [
         {
           "name": "response",
-          "description": "The `Response` object as defined in the Fetch API spec.\n\nThis element will read the response body from it so it need to not\nbe read before setting this to this element. According to the Fetch\nAPI the response can be read only once.\n\nThe element will set a `responseBody` property which will be a String\nof the response.\n\nThis element imports a polyfill for the Fetch API.",
+          "description": "ARC response object.\n\nProperties -\n- status (`Number`) - Response status code\n- statusText (`String`) - Response status text. Can be empty string.\n- headers (`String|undefined`) - Response headers\n- payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body",
           "sourceRange": {
             "start": {
-              "line": 145,
+              "line": 148,
               "column": 8
             },
             "end": {
-              "line": 148,
+              "line": 151,
               "column": 9
             }
           },
           "metadata": {},
-          "type": "Object"
+          "type": "{status: String, statusText: String, headers: (String | undefined), payload: (String | Document | ArrayBuffer | Blob | undefined)}"
         },
         {
           "name": "request",
-          "description": "The `Request` object as defined in the Fetch API spec.\nThis element provides the polyfill for the Fetch API.\n\nThis element will read the request body from it so it need to not\nbe read before setting this to this element. According to the Fetch\nAPI the body can be read only once.\n\nPlease, use the `Request.clone()` method and set a copy if you need\nto read the body elsewhere.",
+          "description": "ARC request object\n\nProperties -\n- url (`String`) - Request URL\n- method (`String`) - Request HTTP method.\n- headers (`String|undefined`) - HTTP headers string\n- payload (`String|FormData|File|ArrayBuffer|undefined`) Request body",
           "sourceRange": {
             "start": {
-              "line": 160,
+              "line": 168,
               "column": 8
             },
             "end": {
-              "line": 163,
+              "line": 171,
               "column": 9
             }
           },
@@ -4275,11 +4275,11 @@
           "description": "An Error object associated with the request if the response was errored.\nIt should have a `message` property set to the human readable\nexplenation of the error.\nIf not set the default message will be displaed.\n\n`isError` must be set with thit object.",
           "sourceRange": {
             "start": {
-              "line": 174,
+              "line": 182,
               "column": 8
             },
             "end": {
-              "line": 174,
+              "line": 182,
               "column": 29
             }
           },
@@ -4291,11 +4291,11 @@
           "description": "Response body.\n\nThs value is computed from `response` property.",
           "sourceRange": {
             "start": {
-              "line": 182,
+              "line": 190,
               "column": 8
             },
             "end": {
-              "line": 182,
+              "line": 190,
               "column": 28
             }
           },
@@ -4307,11 +4307,11 @@
           "description": "Returned status code.\nThs value is computed from `response` property.",
           "sourceRange": {
             "start": {
-              "line": 187,
+              "line": 195,
               "column": 8
             },
             "end": {
-              "line": 187,
+              "line": 195,
               "column": 26
             }
           },
@@ -4323,11 +4323,11 @@
           "description": "Returned status message (if any).\nThs value is computed from `response` property.",
           "sourceRange": {
             "start": {
-              "line": 192,
+              "line": 200,
               "column": 8
             },
             "end": {
-              "line": 192,
+              "line": 200,
               "column": 29
             }
           },
@@ -4339,11 +4339,11 @@
           "description": "Request headers sent to the server.\nThs value is computed from `request` property.",
           "sourceRange": {
             "start": {
-              "line": 197,
+              "line": 205,
               "column": 8
             },
             "end": {
-              "line": 197,
+              "line": 205,
               "column": 30
             }
           },
@@ -4355,11 +4355,11 @@
           "description": "Returned from the server headers.\nThs value is computed from `response` property.",
           "sourceRange": {
             "start": {
-              "line": 202,
+              "line": 210,
               "column": 8
             },
             "end": {
-              "line": 202,
+              "line": 210,
               "column": 31
             }
           },
@@ -4371,11 +4371,11 @@
           "description": "The response content type header if present\nThs value is computed from `response` property.",
           "sourceRange": {
             "start": {
-              "line": 207,
+              "line": 215,
               "column": 8
             },
             "end": {
-              "line": 207,
+              "line": 215,
               "column": 27
             }
           },
@@ -4387,11 +4387,11 @@
           "description": "If available, the request / response timings as defined in HAR 1.2\nspec.",
           "sourceRange": {
             "start": {
-              "line": 212,
+              "line": 220,
               "column": 8
             },
             "end": {
-              "line": 212,
+              "line": 220,
               "column": 31
             }
           },
@@ -4403,11 +4403,11 @@
           "description": "The total time of the request / response load.",
           "sourceRange": {
             "start": {
-              "line": 216,
+              "line": 224,
               "column": 8
             },
             "end": {
-              "line": 216,
+              "line": 224,
               "column": 27
             }
           },
@@ -4419,11 +4419,11 @@
           "description": "If this information available, the source HTTP message sent to\nthe remote machine.",
           "sourceRange": {
             "start": {
-              "line": 221,
+              "line": 229,
               "column": 8
             },
             "end": {
-              "line": 221,
+              "line": 229,
               "column": 31
             }
           },
@@ -4435,11 +4435,11 @@
           "description": "List of ordered redirects.\nEach object has the following properties:\n- status (`Number`) - Response status code\n- statusText (`String`) - Response status text. Can be empty string.\n- headers (`String|undefined`) - Response headers\n- payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body",
           "sourceRange": {
             "start": {
-              "line": 230,
+              "line": 238,
               "column": 8
             },
             "end": {
-              "line": 230,
+              "line": 238,
               "column": 24
             }
           },
@@ -4451,11 +4451,11 @@
           "description": "If timings stats are available for redirects, the list of the\n`timings` objects as defined in HAR 1.2 specification.\nThe list should be ordered list.",
           "sourceRange": {
             "start": {
-              "line": 236,
+              "line": 244,
               "column": 8
             },
             "end": {
-              "line": 236,
+              "line": 244,
               "column": 30
             }
           },
@@ -4465,22 +4465,6 @@
         {
           "name": "has-response",
           "description": "Computed value, false if the response is set and it is a HEAD type\nrequest (which can't have the response).",
-          "sourceRange": {
-            "start": {
-              "line": 241,
-              "column": 8
-            },
-            "end": {
-              "line": 245,
-              "column": 9
-            }
-          },
-          "metadata": {},
-          "type": "boolean"
-        },
-        {
-          "name": "has-response-body",
-          "description": "Computed value, true when the response body has a value.",
           "sourceRange": {
             "start": {
               "line": 249,
@@ -4495,15 +4479,31 @@
           "type": "boolean"
         },
         {
+          "name": "has-response-body",
+          "description": "Computed value, true when the response body has a value.",
+          "sourceRange": {
+            "start": {
+              "line": 257,
+              "column": 8
+            },
+            "end": {
+              "line": 261,
+              "column": 9
+            }
+          },
+          "metadata": {},
+          "type": "boolean"
+        },
+        {
           "name": "is-error",
           "description": "Set to `true` if the response has error object set.",
           "sourceRange": {
             "start": {
-              "line": 255,
+              "line": 263,
               "column": 8
             },
             "end": {
-              "line": 258,
+              "line": 266,
               "column": 9
             }
           },
@@ -4515,11 +4515,11 @@
           "description": "If true it means that the request has been made by the basic\ntransport and advanced details of the request/response like\nredirects, timings, source message are not available.\nIt this case it will hide unused tabs.",
           "sourceRange": {
             "start": {
-              "line": 265,
+              "line": 273,
               "column": 8
             },
             "end": {
-              "line": 268,
+              "line": 276,
               "column": 9
             }
           },
@@ -4531,11 +4531,11 @@
           "description": "A request URL that has been used to make a request",
           "sourceRange": {
             "start": {
-              "line": 270,
+              "line": 278,
               "column": 8
             },
             "end": {
-              "line": 270,
+              "line": 278,
               "column": 26
             }
           },
@@ -4547,11 +4547,11 @@
           "description": "A HTTP method used to make a request",
           "sourceRange": {
             "start": {
-              "line": 272,
+              "line": 280,
               "column": 8
             },
             "end": {
-              "line": 272,
+              "line": 280,
               "column": 29
             }
           },
