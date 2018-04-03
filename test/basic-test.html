@@ -1,109 +1,174 @@
 <!doctype html>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
     <script src="../../iron-test-helpers/test-helpers.js"></script>
     <script src="../../iron-test-helpers/mock-interactions.js"></script>
-
-    <link rel="import" href="../../fetch-polyfill/fetch-polyfill.html">
-    <link rel="import" href="../../promise-polyfill/promise-polyfill-lite.html">
     <link rel="import" href="../response-view.html">
   </head>
   <body>
 
     <test-fixture id="basic">
       <template>
-        <response-view></response-view>
+        <response-view is-xhr></response-view>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="ErrorResponse">
+      <template>
+        <response-view is-xhr is-error></response-view>
       </template>
     </test-fixture>
 
     <script>
     /* global suite, test, fixture, assert, TestHelpers */
-    suite('basic', function() {
+    suite('Request computations', () => {
+      const request = {
+        url: 'https://domain.com',
+        method: 'GET',
+        headers: 'accept: application/json'
+      };
 
-      function createRequest(method, url, headers, body) {
-        url = url || 'http://domain.com';
-        var demoHeaders = new Headers(headers || {});
-        var opts = {
-          method: method || 'GET',
-          mode: 'cors',
-          headers: demoHeaders
-        };
-        if (body) {
-          opts.body = body;
-        }
-        return new Request(url, opts);
-      }
-
-      function generateResponse(body, code, status, headers) {
-        var init = {
-          status: code || 200,
-          statusText: status || '',
-          headers: headers || new Headers()
-        };
-        return new Response(body, init);
-      }
-
-      var element;
-      setup(function() {
+      let element;
+      setup(() => {
         element = fixture('basic');
-        element.request = createRequest();
-        element.response = generateResponse('{"test":true}', 200, 'OK', {
-          'content-type': 'application/json'
+        element.request = request;
+      });
+
+      test('Sets requestUrl', () => {
+        assert.equal(element.requestUrl, request.url);
+      });
+
+      test('Sets requestMethod', () => {
+        assert.equal(element.requestMethod, request.method);
+      });
+
+      test('Sets requestMethod', () => {
+        assert.equal(element.requestHeaders, request.headers);
+      });
+
+      test('Computes hasResponse', () => {
+        assert.isTrue(element.hasResponse);
+      });
+
+      test('hasResponse is false for HEAD requests', () => {
+        element.request = {
+          url: 'https://domain.com',
+          method: 'HEAD',
+          headers: 'accept: application/json'
+        };
+        assert.isFalse(element.hasResponse);
+      });
+
+      test('hasResponseBody is false', () => {
+        assert.isFalse(element.hasResponseBody);
+      });
+
+      test('Renders empty info', (done) => {
+        element.request = {
+          url: 'https://domain.com',
+          method: 'HEAD',
+          headers: 'accept: application/json'
+        };
+        flush(() => {
+          const label = element.shadowRoot.querySelector('.empty-info');
+          assert.ok(label);
+          done();
+        });
+      });
+    });
+
+    suite('Response computations', () => {
+      const request = {
+        url: 'https://domain.com',
+        method: 'GET',
+        headers: 'accept: application/json'
+      };
+
+      const response = {
+        status: 200,
+        statusText: 'OK',
+        payload: '{"test":true}',
+        headers: 'content-type: application/json; charset=utf8'
+      };
+
+      let element;
+      setup(() => {
+        element = fixture('basic');
+        element.request = request;
+        element.response = response;
+      });
+
+      test('hasResponseBody is true', () => {
+        assert.isTrue(element.hasResponseBody);
+      });
+
+      test('Sets contentType', () => {
+        assert.equal(element.contentType, 'application/json');
+      });
+
+      test('Empty info is not rendered', (done) => {
+        flush(() => {
+          const label = element.shadowRoot.querySelector('.empty-info');
+          assert.notOk(label);
+          done();
         });
       });
 
-      test('Should set status code', function() {
-        assert.equal(element.statusCode, 200);
-      });
-
-      test('Should set status message', function() {
-        assert.equal(element.statusMessage, 'OK');
-      });
-
-      test('Should set response headers', function() {
-        assert.equal(element.responseHeaders, 'content-type: application/json');
-      });
-
-      test('Should set hasResponse to true', function() {
-        assert.equal(element.hasResponse, true);
-      });
-
-      test('Should set isError to false', function() {
-        assert.equal(element.hasResponse, true);
-      });
-
-      test('Should set response content type', function(done) {
-        TestHelpers.forceXIfStamp(element);
-        // Content type is set async so it has to wait a moment.
-        setTimeout(function() {
-          assert.equal(element.contentType, 'application/json');
+      test('Renders response-body-view', (done) => {
+        flush(() => {
+          const panel = element.shadowRoot.querySelector('response-body-view');
+          assert.ok(panel);
           done();
-        }, 250);
+        });
+      });
+    });
+
+    suite('Error response', () => {
+      const request = {
+        url: 'https://domain.com',
+        method: 'GET',
+        headers: 'accept: application/json'
+      };
+
+      const response = {
+        status: 200,
+        statusText: 'OK',
+        payload: '{"test":true}',
+        headers: 'content-type: application/json; charset=utf8'
+      };
+
+      let element;
+      setup(() => {
+        element = fixture('ErrorResponse');
+        element.request = request;
+        element.response = response;
+        element.responseError = new Error('test');
       });
 
-      test('Should set response body', function(done) {
-        // responseBody is set async so it has to wait a moment.
-        setTimeout(function() {
-          assert.equal(element.responseBody, '{"test":true}');
+      test('Sets contentType', () => {
+        assert.equal(element.contentType, 'application/json');
+      });
+
+      test('Renders response-error-view', (done) => {
+        flush(() => {
+          const label = element.shadowRoot.querySelector('response-error-view');
+          assert.ok(label);
           done();
-        }, 250);
+        });
+      });
+
+      test('Renders response-body-view when set', (done) => {
+        flush(() => {
+          const panel = element.shadowRoot.querySelector('response-body-view');
+          assert.ok(panel);
+          done();
+        });
       });
     });
     </script>
-
   </body>
 </html>
