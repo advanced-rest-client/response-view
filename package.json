@@ -1,5 +1,5 @@
 {
-  "name": "response-view",
+  "name": "@api-components/response-view",
   "description": "An element to display the HTTP response view",
   "version": "2.0.0-preview",
   "license": "Apache-2.0",
