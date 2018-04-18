@@ -41,7 +41,7 @@ the License.
       request-url="[[requestUrl]]"
       request-method="[[requestMethod]]"></response-status-view>
     <template is="dom-if" if="[[hasResponse]]">
-      <template is="dom-if" if="[[isError]]">
+      <template is="dom-if" if="[[_renderError]]">
         <response-error-view message="[[responseError.message]]"></response-error-view>
       </template>
       <template is="dom-if" if="[[hasResponseBody]]">
@@ -278,7 +278,11 @@ the License.
         // A request URL that has been used to make a request
         requestUrl: String,
         // A HTTP method used to make a request
-        requestMethod: String
+        requestMethod: String,
+        _renderError: {
+          type: Boolean,
+          computed: '_computeRenderError(isError, hasResponseBody)'
+        }
       };
     }
 
@@ -367,6 +371,10 @@ the License.
      */
     _computeHasResponseBody(body) {
       return !!body;
+    }
+
+    _computeRenderError(isError, hasResponseBody) {
+      return !!(isError && !hasResponseBody);
     }
   }
   window.customElements.define(ResponseView.is, ResponseView);

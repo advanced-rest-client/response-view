@@ -138,7 +138,7 @@
       const response = {
         status: 200,
         statusText: 'OK',
-        payload: '{"test":true}',
+        // payload: '{"test":true}',
         headers: 'content-type: application/json; charset=utf8'
       };
 
@@ -146,15 +146,16 @@
       setup(() => {
         element = fixture('ErrorResponse');
         element.request = request;
-        element.response = response;
         element.responseError = new Error('test');
       });
 
       test('Sets contentType', () => {
+        element.response = response;
         assert.equal(element.contentType, 'application/json');
       });
 
-      test('Renders response-error-view', (done) => {
+      test('Renders response-error-view when no payload', (done) => {
+        element.response = response;
         flush(() => {
           const label = element.shadowRoot.querySelector('response-error-view');
           assert.ok(label);
@@ -162,7 +163,9 @@
         });
       });
 
-      test('Renders response-body-view when set', (done) => {
+      test('Renders response-body-view when payload is set', (done) => {
+        response.payload = '{"test":true}';
+        element.response = response;
         flush(() => {
           const panel = element.shadowRoot.querySelector('response-body-view');
           assert.ok(panel);
