@@ -64,7 +64,8 @@ declare namespace ApiElements {
    * array.
    * - timings `Object` - HAR 1.2 timings object
    *
-   * Read [response-status-view](https://elements.advancedrestclient.com/elements/response-status-view)
+   * Read [response-status-view]
+   * (https://elements.advancedrestclient.com/elements/response-status-view)
    * element documentation for more details.
    *
    * ## Error reporting
@@ -222,6 +223,7 @@ declare namespace ApiElements {
      * A HTTP method used to make a request
      */
     requestMethod: string|null|undefined;
+    readonly _renderError: boolean|null|undefined;
 
     /**
      * Resets the initial variables for the Response change handler.
@@ -256,7 +258,7 @@ declare namespace ApiElements {
      *
      * @param request ARC request object.
      */
-    _computeHasResponse(request: object|null): any;
+    _computeHasResponse(request: object|null): Boolean|null;
 
     /**
      * Computes value for `hasResponseBody` property.
@@ -265,6 +267,7 @@ declare namespace ApiElements {
      * @returns True if anything is set.
      */
     _computeHasResponseBody(body: any|null): Boolean|null;
+    _computeRenderError(isError: any, hasResponseBody: any): any;
   }
 }
 
