@@ -1,3 +1,18 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/advanced-rest-client/response-view/compare/0.1.14...2.0.2) (2018-09-23)
+
+
+### Docs
+
+* Updated documentation. ([9b64574bb6d62fb2a82467cfacc17a7f7d2002cd](https://github.com/advanced-rest-client/response-view/commit/9b64574bb6d62fb2a82467cfacc17a7f7d2002cd))
+* Updating documentation ([9b6ae6e17c5d1ed2d15250cc15c82483f9a1f5de](https://github.com/advanced-rest-client/response-view/commit/9b6ae6e17c5d1ed2d15250cc15c82483f9a1f5de))
+
+### Update
+
+* Has response is now true by default ([9b536d6a161bb1e065c3dd9a224e501d20b6d35a](https://github.com/advanced-rest-client/response-view/commit/9b536d6a161bb1e065c3dd9a224e501d20b6d35a))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/advanced-rest-client/response-view/compare/0.1.14...2.0.1) (2018-08-09)
 
