@@ -314,6 +314,14 @@ the License.
       if (!contentType) {
         contentType = 'text/plain';
       }
+      let body = response.payload;
+      if (body && body.type === 'Buffer') {
+        let str = '';
+        for (let i = 0, len = body.data.length; i < len; i++) {
+          str += String.fromCharCode(body.data[i]);
+        }
+        body = str;
+      }
       this.responseBody = response.payload;
       this.contentType = contentType;
     }
