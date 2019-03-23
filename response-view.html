@@ -45,7 +45,10 @@ the License.
         <response-error-view message="[[responseError.message]]"></response-error-view>
       </template>
       <template is="dom-if" if="[[hasResponseBody]]">
-        <response-body-view response-text="[[responseBody]]" content-type="[[contentType]]"></response-body-view>
+        <response-body-view
+          response-text="[[responseBody]]"
+          content-type="[[contentType]]"
+          charset="[[charset]]"></response-body-view>
       </template>
     </template>
     <template is="dom-if" if="[[!hasResponse]]">
@@ -283,7 +286,14 @@ the License.
         _renderError: {
           type: Boolean,
           computed: '_computeRenderError(isError, hasResponseBody)'
-        }
+        },
+        /**
+         * Response's character encoding.
+         * This value is set when the response is changed. Can be undefined in which case
+         * default `utf-8` is used.
+         * It is read from `content-type` header value, e.g.: `Content-Type: text/html; charset=iso-8859-1`
+         */
+        charset: {type: String, readOnly: true}
       };
     }
 
@@ -310,18 +320,11 @@ the License.
       this.statusCode = response.status;
       this.statusMessage = response.statusText;
       this.responseHeaders = response.headers;
-      let contentType = this._readContentType(response.headers);
+      let [contentType, charset] = this._readContentType(response.headers);
       if (!contentType) {
         contentType = 'text/plain';
       }
-      let body = response.payload;
-      if (body && body.type === 'Buffer') {
-        let str = '';
-        for (let i = 0, len = body.data.length; i < len; i++) {
-          str += String.fromCharCode(body.data[i]);
-        }
-        body = str;
-      }
+      this._setCharset(charset);
       this.responseBody = response.payload;
       this.contentType = contentType;
     }
@@ -329,22 +332,24 @@ the License.
      * Reads content-type header from the response headers.
      *
      * @param {?String} headers Headers received from the server
-     * @return {String|undefined} Content type value if proesent.
+     * @return {Array<String>} When present an array where first item is
+     * the content type and second is charset value. Otherwise empty array.
      */
     _readContentType(headers) {
       if (!headers || typeof headers !== 'string') {
-        return;
+        return [];
       }
       const ctMatches = headers.match(/^\s*content\-type\s*:\s*(.*)$/im);
       if (!ctMatches) {
-        return;
+        return [];
       }
       let mime = ctMatches[1];
+      const charset = this._computeCharset(mime);
       let index = mime.indexOf(';');
       if (index !== -1) {
         mime = mime.substr(0, index);
       }
-      return mime;
+      return [mime, charset];
     }
     /**
      * Propagate request data when the `request` object changes.
@@ -385,6 +390,27 @@ the License.
 
     _computeRenderError(isError, hasResponseBody) {
       return !!(isError && !hasResponseBody);
+    }
+    /**
+     * Computes charset value from the `content-type` header.
+     * @param {String} contentType Content type header string
+     * @return {String|undefined}
+     */
+    _computeCharset(contentType) {
+      if (!contentType || !contentType.split) {
+        return;
+      }
+      if (contentType.indexOf('charset') === -1) {
+        return;
+      }
+      const parts = contentType.split(';');
+      for (let i = 0, len = parts.length; i < len; i++) {
+        let part = parts[i].trim();
+        const _tmp = part.split('=');
+        if (_tmp[0] === 'charset') {
+          return _tmp[1].trim();
+        }
+      }
     }
   }
   window.customElements.define(ResponseView.is, ResponseView);
