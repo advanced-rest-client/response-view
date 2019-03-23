@@ -11,11 +11,11 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-import '@advanced-rest-client/response-status-view/response-status-view.js';
-import '@advanced-rest-client/response-error-view/response-error-view.js';
-import '@advanced-rest-client/response-body-view/response-body-view.js';
+import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
+import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
+import '../../@advanced-rest-client/response-status-view/response-status-view.js';
+import '../../@advanced-rest-client/response-error-view/response-error-view.js';
+import '../../@advanced-rest-client/response-body-view/response-body-view.js';
 /**
  * An element to display HTTP response view.
  *
