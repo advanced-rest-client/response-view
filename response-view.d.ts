@@ -12,9 +12,7 @@
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
 
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
+export {ResponseView};
 
 declare namespace ApiElements {
 
@@ -229,6 +227,14 @@ declare namespace ApiElements {
     readonly _renderError: boolean|null|undefined;
 
     /**
+     * Response's character encoding.
+     * This value is set when the response is changed. Can be undefined in which case
+     * default `utf-8` is used.
+     * It is read from `content-type` header value, e.g.: `Content-Type: text/html; charset=iso-8859-1`
+     */
+    readonly charset: string|null|undefined;
+
+    /**
      * Resets the initial variables for the Response change handler.
      */
     _reset(): void;
@@ -244,9 +250,10 @@ declare namespace ApiElements {
      * Reads content-type header from the response headers.
      *
      * @param headers Headers received from the server
-     * @returns Content type value if proesent.
+     * @returns When present an array where first item is
+     * the content type and second is charset value. Otherwise empty array.
      */
-    _readContentType(headers: String|null): String|null|undefined;
+    _readContentType(headers: String|null): Array<String|null>|null;
 
     /**
      * Propagate request data when the `request` object changes.
@@ -271,6 +278,13 @@ declare namespace ApiElements {
      */
     _computeHasResponseBody(body: any|null): Boolean|null;
     _computeRenderError(isError: any, hasResponseBody: any): any;
+
+    /**
+     * Computes charset value from the `content-type` header.
+     *
+     * @param contentType Content type header string
+     */
+    _computeCharset(contentType: String|null): String|null|undefined;
   }
 }
 
