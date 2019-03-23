@@ -50,7 +50,7 @@
     "The Advanced REST client authors <arc@mulesoft.com>"
   ],
   "dependencies": {
-    "@advanced-rest-client/response-body-view": "^3.0.0-preview.1",
+    "@advanced-rest-client/response-body-view": "^3.0.0-preview.5",
     "@advanced-rest-client/response-error-view": "^3.0.0-preview.1",
     "@advanced-rest-client/response-status-view": "^3.0.0-preview.1",
     "@polymer/polymer": "^3.0.0"
