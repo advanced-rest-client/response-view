@@ -91,7 +91,7 @@ import '../../@advanced-rest-client/response-body-view/response-body-view.js';
  * @demo demo/index.html
  * @memberof ApiElements
  */
-class ResponseView extends PolymerElement {
+export class ResponseView extends PolymerElement {
   static get template() {
     return html`
     <style>
