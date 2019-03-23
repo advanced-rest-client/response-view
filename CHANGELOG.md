@@ -175,3 +175,21 @@
 
 
 
+## [2.0.3](https://github.com/advanced-rest-client/response-view/compare/0.1.14...2.0.3) (2019-03-23)
+
+
+### Docs
+
+* Updated documentation. ([9b64574bb6d62fb2a82467cfacc17a7f7d2002cd](https://github.com/advanced-rest-client/response-view/commit/9b64574bb6d62fb2a82467cfacc17a7f7d2002cd))
+* Updating documentation ([9b6ae6e17c5d1ed2d15250cc15c82483f9a1f5de](https://github.com/advanced-rest-client/response-view/commit/9b6ae6e17c5d1ed2d15250cc15c82483f9a1f5de))
+
+### New
+
+* Adding support for `charset` proeprty ([d3628d0b0289e35a6b4ee8ddb0bdf7fbbbe8988e](https://github.com/advanced-rest-client/response-view/commit/d3628d0b0289e35a6b4ee8ddb0bdf7fbbbe8988e))
+
+### Update
+
+* Has response is now true by default ([9b536d6a161bb1e065c3dd9a224e501d20b6d35a](https://github.com/advanced-rest-client/response-view/commit/9b536d6a161bb1e065c3dd9a224e501d20b6d35a))
+
+
+
