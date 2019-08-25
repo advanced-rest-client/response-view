@@ -5,19 +5,18 @@
  *   https://github.com/Polymer/tools/tree/master/packages/gen-typescript-declarations
  *
  * To modify these typings, edit the source file(s):
- *   response-view.html
+ *   response-view.js
  */
 
 
 // tslint:disable:variable-name Describing an API that's defined elsewhere.
 // tslint:disable:no-any describes the API as best we are able today
 
-/// <reference path="../polymer/types/polymer-element.d.ts" />
-/// <reference path="../response-status-view/response-status-view.d.ts" />
-/// <reference path="../response-error-view/response-error-view.d.ts" />
-/// <reference path="../response-body-view/response-body-view.d.ts" />
+import {html, css, LitElement} from 'lit-element';
 
-declare namespace ApiElements {
+export {ResponseView};
+
+declare namespace UiElements {
 
   /**
    * An element to display HTTP response view.
@@ -76,31 +75,8 @@ declare namespace ApiElements {
    *
    * If there's a request error set `isError` property and the `responseError`
    * that is an `Error` object.
-   *
-   * ## Changes in version 2.0
-   * - API components does not uses `Reques` and `Response` objects anymore.
-   * Instead use data model described above.
-   *
-   * Custom property | Description | Default
-   * ----------------|-------------|----------
-   * `--response-view` | Mixin applied to the element | `{}`
-   * `--no-info-message` | Mixin applied to the information about lack of the response | `{}`
-   *
-   * Use: `response-status-view`, `response-body-view` and `response-error-view`
-   * styles to style this element.
    */
-  class ResponseView extends Polymer.Element {
-
-    /**
-     * ARC response object.
-     *
-     * Properties -
-     * - status (`Number`) - Response status code
-     * - statusText (`String`) - Response status text. Can be empty string.
-     * - headers (`String|undefined`) - Response headers
-     * - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
-     */
-    response: {status: String|null, statusText: String|null, headers?: String|null, payload?: String|Document|ArrayBuffer|Blob|null};
+  class ResponseView extends LitElement {
 
     /**
      * ARC request object
@@ -112,6 +88,17 @@ declare namespace ApiElements {
      * - payload (`String|FormData|File|ArrayBuffer|undefined`) Request body
      */
     request: object|null|undefined;
+
+    /**
+     * ARC response object.
+     *
+     * Properties -
+     * - status (`Number`) - Response status code
+     * - statusText (`String`) - Response status text. Can be empty string.
+     * - headers (`String|undefined`) - Response headers
+     * - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
+     */
+    response: {status: String|null, statusText: String|null, headers?: String|null, payload?: String|Document|ArrayBuffer|Blob|null};
 
     /**
      * An Error object associated with the request if the response was errored.
@@ -198,12 +185,7 @@ declare namespace ApiElements {
      * Computed value, false if the response is set and it is a HEAD type
      * request (which can't have the response).
      */
-    readonly hasResponse: boolean|null|undefined;
-
-    /**
-     * Computed value, true when the response body has a value.
-     */
-    readonly hasResponseBody: boolean|null|undefined;
+    _hasResponse: boolean|null|undefined;
 
     /**
      * Set to `true` if the response has error object set.
@@ -227,7 +209,6 @@ declare namespace ApiElements {
      * A HTTP method used to make a request
      */
     requestMethod: string|null|undefined;
-    readonly _renderError: boolean|null|undefined;
 
     /**
      * Response's character encoding.
@@ -235,7 +216,11 @@ declare namespace ApiElements {
      * default `utf-8` is used.
      * It is read from `content-type` header value, e.g.: `Content-Type: text/html; charset=iso-8859-1`
      */
-    readonly charset: string|null|undefined;
+    _charset: string|null|undefined;
+    constructor();
+    render(): any;
+    _errorTemplate(): any;
+    _responseTemplate(): any;
 
     /**
      * Resets the initial variables for the Response change handler.
@@ -274,15 +259,6 @@ declare namespace ApiElements {
     _computeHasResponse(request: object|null): Boolean|null;
 
     /**
-     * Computes value for `hasResponseBody` property.
-     *
-     * @param body Current response body value.
-     * @returns True if anything is set.
-     */
-    _computeHasResponseBody(body: any|null): Boolean|null;
-    _computeRenderError(isError: any, hasResponseBody: any): any;
-
-    /**
      * Computes charset value from the `content-type` header.
      *
      * @param contentType Content type header string
@@ -291,6 +267,9 @@ declare namespace ApiElements {
   }
 }
 
-interface HTMLElementTagNameMap {
-  "response-view": ApiElements.ResponseView;
+declare global {
+
+  interface HTMLElementTagNameMap {
+    "response-view": UiElements.ResponseView;
+  }
 }
