@@ -11,11 +11,10 @@ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 License for the specific language governing permissions and limitations under
 the License.
 */
-import {PolymerElement} from '../../@polymer/polymer/polymer-element.js';
-import {html} from '../../@polymer/polymer/lib/utils/html-tag.js';
-import '../../@advanced-rest-client/response-status-view/response-status-view.js';
-import '../../@advanced-rest-client/response-error-view/response-error-view.js';
-import '../../@advanced-rest-client/response-body-view/response-body-view.js';
+import { html, css, LitElement } from 'lit-element';
+import '@advanced-rest-client/response-status-view/response-status-view.js';
+import '@advanced-rest-client/response-error-view/response-error-view.js';
+import '@advanced-rest-client/response-body-view/response-body-view.js';
 /**
  * An element to display HTTP response view.
  *
@@ -74,69 +73,67 @@ import '../../@advanced-rest-client/response-body-view/response-body-view.js';
  * If there's a request error set `isError` property and the `responseError`
  * that is an `Error` object.
  *
- * ## Changes in version 2.0
- * - API components does not uses `Reques` and `Response` objects anymore.
- * Instead use data model described above.
- *
- * Custom property | Description | Default
- * ----------------|-------------|----------
- * `--response-view` | Mixin applied to the element | `{}`
- * `--no-info-message` | Mixin applied to the information about lack of the response | `{}`
- *
- * Use: `response-status-view`, `response-body-view` and `response-error-view`
- * styles to style this element.
- *
  * @customElement
- * @polymer
  * @demo demo/index.html
- * @memberof ApiElements
+ * @memberof UiElements
  */
-export class ResponseView extends PolymerElement {
-  static get template() {
+export class ResponseView extends LitElement {
+  static get styles() {
+    return css`:host { display: block; }`;
+  }
+
+  _errorTemplate() {
+    const { responseError } = this;
+    const message = responseError && responseError.message || 'unknown error';
+    return html`<response-error-view .message="${message}"></response-error-view>`;
+  }
+
+  _responseTemplate() {
+    const { _charset, isError, responseBody, contentType } = this;
+    const _renderError = !!(isError && !responseBody);
     return html`
-    <style>
-    :host {
-      display: block;
-      @apply --response-view;
-    }
+    ${_renderError ? this._errorTemplate() : ''}
+    ${responseBody ? html`<response-body-view
+      .responseText="${responseBody}"
+      .contentType="${contentType}"
+      .charset="${_charset}"></response-body-view>` : ''}`;
+  }
 
-    .empty-info {
-      @apply --no-info-message;
-    }
-    </style>
+  render() {
+    const {
+      _hasResponse,
+      statusCode,
+      statusMessage,
+      requestHeaders,
+      responseHeaders,
+      loadingTime,
+      redirects,
+      redirectTimings,
+      responseTimings,
+      isXhr,
+      requestUrl,
+      requestMethod
+    } = this;
+    return html`
     <response-status-view
-      status-code="[[statusCode]]"
-      status-message="[[statusMessage]]"
-      request-headers="[[requestHeaders]]"
-      response-headers="[[responseHeaders]]"
-      loading-time="[[loadingTime]]"
-      http-message="[[sentHttpMessage]]"
-      redirects="[[redirects]]"
-      redirect-timings="[[redirectTimings]]"
-      timings="[[responseTimings]]"
-      is-xhr="[[isXhr]]"
-      request-url="[[requestUrl]]"
-      request-method="[[requestMethod]]"></response-status-view>
-    <template is="dom-if" if="[[hasResponse]]">
-      <template is="dom-if" if="[[_renderError]]">
-        <response-error-view message="[[responseError.message]]"></response-error-view>
-      </template>
-      <template is="dom-if" if="[[hasResponseBody]]">
-        <response-body-view
-          response-text="[[responseBody]]"
-          content-type="[[contentType]]"
-          charset="[[charset]]"></response-body-view>
-      </template>
-    </template>
-    <template is="dom-if" if="[[!hasResponse]]">
-      <p class="empty-info">This response does not carry a payload.</p>
-    </template>
-`;
+      .statusCode="${statusCode}"
+      .statusMessage="${statusMessage}"
+      .requestHeaders="${requestHeaders}"
+      .responseHeaders="${responseHeaders}"
+      .loadingTime="${loadingTime}"
+      .httpMessage="${this.sentHttpMessage}"
+      .redirects="${redirects}"
+      .redirectTimings="${redirectTimings}"
+      .timings="${responseTimings}"
+      isxhr="${isXhr}"
+      .requestUrl="${requestUrl}"
+      .requestMethod="${requestMethod}"></response-status-view>
+
+    ${_hasResponse ?
+      this._responseTemplate() :
+      html`<p class="empty-info">This response does not carry a payload.</p>`}`;
   }
 
-  static get is() {
-    return 'response-view';
-  }
   static get properties() {
     return {
       /**
@@ -154,10 +151,7 @@ export class ResponseView extends PolymerElement {
        *  headers: (String|undefined),
        *  payload: (String|Document|ArrayBuffer|Blob|undefined)}}
        */
-      response: {
-        type: Object,
-        observer: '_responseChanged'
-      },
+      response: { type: Object },
       /**
        * ARC request object
        *
@@ -174,10 +168,7 @@ export class ResponseView extends PolymerElement {
        *  payload: (String|FormData|File|ArrayBuffer|undefined)
        * }}
        */
-      request: {
-        type: Object,
-        observer: '_requestChanged'
-      },
+      request: { type: Object },
       /**
        * An Error object associated with the request if the response was errored.
        * It should have a `message` property set to the human readable
@@ -188,7 +179,7 @@ export class ResponseView extends PolymerElement {
        *
        * @type {Error}
        */
-      responseError: Object,
+      responseError: { type: Object },
       /**
        * Response body.
        *
@@ -196,46 +187,46 @@ export class ResponseView extends PolymerElement {
        *
        * @type {String|FormData|File|ArrayBuffer|undefined}
        */
-      responseBody: String,
+      responseBody: { type: String },
       /**
        * Returned status code.
        * Ths value is computed from `response` property.
        */
-      statusCode: Number,
+      statusCode: { type: Number },
       /**
        * Returned status message (if any).
        * Ths value is computed from `response` property.
        */
-      statusMessage: String,
+      statusMessage: { type: String },
       /**
        * Request headers sent to the server.
        * Ths value is computed from `request` property.
        */
-      requestHeaders: String,
+      requestHeaders: { type: String },
       /**
        * Returned from the server headers.
        * Ths value is computed from `response` property.
        */
-      responseHeaders: String,
+      responseHeaders: { type: String },
       /**
        * The response content type header if present
        * Ths value is computed from `response` property.
        */
-      contentType: String,
+      contentType: { type: String },
       /**
        * If available, the request / response timings as defined in HAR 1.2
        * spec.
        */
-      responseTimings: Object,
+      responseTimings: { type: Object },
       /**
        * The total time of the request / response load.
        */
-      loadingTime: Number,
+      loadingTime: { type: Number },
       /**
        * If this information available, the source HTTP message sent to
        * the remote machine.
        */
-      sentHttpMessage: String,
+      sentHttpMessage: { type: String },
       /**
        * List of ordered redirects.
        * Each object has the following properties:
@@ -244,63 +235,70 @@ export class ResponseView extends PolymerElement {
        * - headers (`String|undefined`) - Response headers
        * - payload (`String|Document|ArrayBuffer|Blob|undefined`) - Response body
        */
-      redirects: Array,
+      redirects: { type: Array },
       /**
        * If timings stats are available for redirects, the list of the
        * `timings` objects as defined in HAR 1.2 specification.
        * The list should be ordered list.
        */
-      redirectTimings: Array,
+      redirectTimings: { type: Array },
       /**
        * Computed value, false if the response is set and it is a HEAD type
        * request (which can't have the response).
        */
-      hasResponse: {
-        type: Boolean,
-        value: true,
-        computed: '_computeHasResponse(request)'
-      },
-      /**
-       * Computed value, true when the response body has a value.
-       */
-      hasResponseBody: {
-        type: Boolean,
-        value: false,
-        computed: '_computeHasResponseBody(responseBody)'
-      },
+      _hasResponse: { type: Boolean },
       // Set to `true` if the response has error object set.
-      isError: {
-        type: Boolean,
-        value: false
-      },
+      isError: { type: Boolean },
       /**
        * If true it means that the request has been made by the basic
        * transport and advanced details of the request/response like
        * redirects, timings, source message are not available.
        * It this case it will hide unused tabs.
        */
-      isXhr: {
-        type: Boolean,
-        value: false
-      },
+      isXhr: { type: Boolean },
       // A request URL that has been used to make a request
-      requestUrl: String,
+      requestUrl: { type: String },
       // A HTTP method used to make a request
-      requestMethod: String,
-      _renderError: {
-        type: Boolean,
-        computed: '_computeRenderError(isError, hasResponseBody)'
-      },
+      requestMethod: { type: String },
       /**
        * Response's character encoding.
        * This value is set when the response is changed. Can be undefined in which case
        * default `utf-8` is used.
        * It is read from `content-type` header value, e.g.: `Content-Type: text/html; charset=iso-8859-1`
        */
-      charset: {type: String, readOnly: true}
+      _charset: { type: String }
     };
   }
 
+  get request() {
+    return this._request;
+  }
+
+  set request(value) {
+    const old = this._request;
+    /* istanbul ignore if */
+    if (old === value) {
+      return;
+    }
+    this._request = value;
+    this.requestUpdate('request', old);
+    this._requestChanged(value);
+  }
+
+  get response() {
+    return this._response;
+  }
+
+  set response(value) {
+    const old = this._response;
+    /* istanbul ignore if */
+    if (old === value) {
+      return;
+    }
+    this._response = value;
+    this.requestUpdate('response', old);
+    this._responseChanged(value);
+  }
   /**
    * Resets the initial variables for the Response change handler.
    */
@@ -328,7 +326,7 @@ export class ResponseView extends PolymerElement {
     if (!contentType) {
       contentType = 'text/plain';
     }
-    this._setCharset(charset);
+    this._charset = charset;
     this.responseBody = response.payload;
     this.contentType = contentType;
   }
@@ -343,7 +341,7 @@ export class ResponseView extends PolymerElement {
     if (!headers || typeof headers !== 'string') {
       return [];
     }
-    const ctMatches = headers.match(/^\s*content\-type\s*:\s*(.*)$/im);
+    const ctMatches = headers.match(/^\s*content-type\s*:\s*(.*)$/im);
     if (!ctMatches) {
       return [];
     }
@@ -362,6 +360,7 @@ export class ResponseView extends PolymerElement {
    */
   _requestChanged(request) {
     this.requestHeaders = undefined;
+    this._hasResponse = this._computeHasResponse(request);
     if (!request) {
       return;
     }
@@ -383,19 +382,6 @@ export class ResponseView extends PolymerElement {
     return true;
   }
   /**
-   * Computes value for `hasResponseBody` property.
-   *
-   * @param {any} body Current response body value.
-   * @return {Boolean} True if anything is set.
-   */
-  _computeHasResponseBody(body) {
-    return !!body;
-  }
-
-  _computeRenderError(isError, hasResponseBody) {
-    return !!(isError && !hasResponseBody);
-  }
-  /**
    * Computes charset value from the `content-type` header.
    * @param {String} contentType Content type header string
    * @return {String|undefined}
@@ -409,7 +395,7 @@ export class ResponseView extends PolymerElement {
     }
     const parts = contentType.split(';');
     for (let i = 0, len = parts.length; i < len; i++) {
-      let part = parts[i].trim();
+      const part = parts[i].trim();
       const _tmp = part.split('=');
       if (_tmp[0] === 'charset') {
         return _tmp[1].trim();
@@ -417,4 +403,4 @@ export class ResponseView extends PolymerElement {
     }
   }
 }
-window.customElements.define(ResponseView.is, ResponseView);
+window.customElements.define('response-view', ResponseView);

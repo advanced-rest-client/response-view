@@ -2,8 +2,6 @@
 
 [![Build Status](https://travis-ci.org/advanced-rest-client/response-view.svg?branch=stage)](https://travis-ci.org/advanced-rest-client/response-view)
 
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/advanced-rest-client/response-view)
-
 ## &lt;response-view&gt;
 
 An element to display the HTTP response view.
@@ -12,10 +10,6 @@ An element to display the HTTP response view.
 ```html
 <response-view></response-view>
 ```
-
-### API components
-
-This components is a part of [API components ecosystem](https://elements.advancedrestclient.com/)
 
 ## Usage
 
@@ -34,44 +28,48 @@ npm install --save @advanced-rest-client/response-view
     </script>
   </head>
   <body>
-    <response-view></response-view>
+    <response-view request="..." response="..."></response-view>
   </body>
 </html>
 ```
 
-### In a Polymer 3 element
+### In a LitElement
 
 ```js
-import {PolymerElement, html} from '@polymer/polymer';
+import { LitElement, html } from 'lit-element';
 import '@advanced-rest-client/response-view/response-view.js';
 
 class SampleElement extends PolymerElement {
-  static get template() {
+  render() {
     return html`
-    <response-view></response-view>
+    <response-view
+      request="${this.request}"
+      response="${this.response}"></response-view>
     `;
   }
 }
 customElements.define('sample-element', SampleElement);
 ```
 
-### Installation
+## Development
 
 ```sh
 git clone https://github.com/advanced-rest-client/response-view
-cd api-url-editor
+cd response-view
 npm install
-npm install -g polymer-cli
 ```
 
 ### Running the demo locally
 
 ```sh
-polymer serve --npm
-open http://127.0.0.1:<port>/demo/
+npm start
 ```
 
 ### Running the tests
 ```sh
-polymer test --npm
+npm test
 ```
+
+### API components
+
+This components is a part of [API components ecosystem](https://elements.advancedrestclient.com/)
