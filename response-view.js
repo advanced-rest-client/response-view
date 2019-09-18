@@ -79,7 +79,14 @@ import '@advanced-rest-client/response-body-view/response-body-view.js';
  */
 export class ResponseView extends LitElement {
   static get styles() {
-    return css`:host { display: block; }`;
+    return css`
+    :host { display: block; }
+
+    response-body-view,
+    response-error-view {
+      margin-top: 24px;
+    }
+    `;
   }
 
   _errorTemplate() {
