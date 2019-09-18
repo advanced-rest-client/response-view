@@ -306,11 +306,17 @@ export class ResponseView extends LitElement {
     this.requestUpdate('response', old);
     this._responseChanged(value);
   }
+
+  constructor() {
+    super();
+    this.statusCode = 0;
+  }
+
   /**
    * Resets the initial variables for the Response change handler.
    */
   _reset() {
-    this.statusCode = undefined;
+    this.statusCode = 0;
     this.statusMessage = undefined;
     this.responseHeaders = undefined;
     this.responseBody = undefined;
