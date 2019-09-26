@@ -24,6 +24,22 @@ describe('<response-view>', function() {
       .request="${request}"></response-view>`));
   }
 
+  describe('#errorMessage', () => {
+    let element;
+    beforeEach(async () => {
+      element = await getFixture();
+    });
+
+    it('returns default message', () => {
+      assert.equal(element.errorMessage, 'unknown error');
+    });
+
+    it('returns error message', () => {
+      element.responseError = new Error('test');
+      assert.equal(element.errorMessage, 'test');
+    });
+  });
+
   describe('Request computations', () => {
     let element;
     beforeEach(async () => {
@@ -42,8 +58,8 @@ describe('<response-view>', function() {
       assert.equal(element.requestHeaders, 'accept: application/json');
     });
 
-    it('Computes _hasResponse', () => {
-      assert.isTrue(element._hasResponse);
+    it('Computes hasResponse', () => {
+      assert.isTrue(element.hasResponse);
     });
   });
 
@@ -53,8 +69,8 @@ describe('<response-view>', function() {
       element = await headFixture();
     });
 
-    it('_hasResponse is false', () => {
-      assert.isFalse(element._hasResponse);
+    it('hasResponse is false', () => {
+      assert.isFalse(element.hasResponse);
     });
 
     it('Renders empty info', () => {
@@ -215,8 +231,8 @@ describe('<response-view>', function() {
       assert.ok(panel);
     });
 
-    it('_hasResponse is true', () => {
-      assert.isTrue(element._hasResponse);
+    it('hasResponse is true', () => {
+      assert.isTrue(element.hasResponse);
     });
   });
 });
