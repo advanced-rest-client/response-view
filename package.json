@@ -1,7 +1,7 @@
 {
   "name": "@advanced-rest-client/response-view",
   "description": "An element to display the HTTP response view",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "license": "Apache-2.0",
   "main": "response-view.js",
   "keywords": [
