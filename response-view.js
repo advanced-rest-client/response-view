@@ -138,7 +138,7 @@ export class ResponseView extends LitElement {
       .redirects="${redirects}"
       .redirectTimings="${redirectTimings}"
       .timings="${responseTimings}"
-      isxhr="${isXhr}"
+      ?isxhr="${isXhr}"
       .requestUrl="${requestUrl}"
       .requestMethod="${requestMethod}"
       ?compatibility="${compatibility}"
