@@ -201,3 +201,12 @@
 
 
 
+## [3.0.3](https://github.com/advanced-rest-client/response-view/compare/0.1.14...3.0.3) (2019-09-27)
+
+
+### Bug Fixes
+
+* fixing setting up isxhr attribute ([11867c9](https://github.com/advanced-rest-client/response-view/commit/11867c9))
+
+
+
