@@ -78,7 +78,7 @@ import '@advanced-rest-client/response-body-view/response-body-view.js';
  * @memberof UiElements
  */
 export class ResponseView extends LitElement {
-  static get styles() {
+  get styles() {
     return css`
     :host { display: block; }
 
@@ -127,7 +127,7 @@ export class ResponseView extends LitElement {
       compatibility,
       narrow
     } = this;
-    return html`
+    return html`<style>${this.styles}</style>
     <response-status-view
       .statusCode="${statusCode}"
       .statusMessage="${statusMessage}"
