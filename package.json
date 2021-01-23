@@ -28,28 +28,5 @@
     "@advanced-rest-client/response-error-view": "^3.0.4",
     "@advanced-rest-client/response-status-view": "^3.0.4",
     "lit-element": "^2.4.0"
-  },
-  "devDependencies": {
-    "@advanced-rest-client/arc-demo-helper": "^1.0.17",
-    "@advanced-rest-client/testing-karma-sl": "^1.4.2",
-    "@advanced-rest-client/xhr-simple-request": "^3.0.1",
-    "@anypoint-web-components/anypoint-button": "^1.1.1",
-    "@anypoint-web-components/anypoint-input": "^0.1.7",
-    "@anypoint-web-components/anypoint-styles": "^1.0.1",
-    "@open-wc/testing": "^2.5.29",
-    "@open-wc/testing-karma": "^4.0.8",
-    "@polymer/iron-test-helpers": "^3.0.1",
-    "@polymer/paper-toast": "^3.0.0",
-    "deepmerge": "^4.2.2",
-    "es-dev-server": "^1.57.7",
-    "karma": "^5.2.3",
-    "sinon": "^9.1.0",
-    "web-animations-js": "^2.3.2"
-  },
-  "scripts": {
-    "test": "karma start --coverage",
-    "start": "es-dev-server --app-index demo/index.html --node-resolve --open --watch",
-    "test:watch": "karma start --auto-watch=true --single-run=false",
-    "test:sl": "karma start karma.sl.config.js --compatibility all --coverage"
   }
 }
